@@ -8,6 +8,10 @@ const pokeTheme = createMuiTheme({
     secondary: {
       main: "#524153",
     },
+    background: {
+      default: "#E0D7EC",
+      // paper: "#D4C3A3",
+    },
   },
 });
 
