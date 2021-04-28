@@ -1,9 +1,4 @@
-import {
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select as MuiSelect,
-} from "@material-ui/core";
+import { InputLabel, MenuItem, Select as MuiSelect } from "@material-ui/core";
 import { PokeInput } from "./styles";
 
 export default function Select({
@@ -34,21 +29,24 @@ export default function Select({
   }
 
   return (
-    <FormControl fullWidth>
-      <InputLabel id="select">{label}</InputLabel>
+    <>
+      <InputLabel id="select" shrink>
+        {label}
+      </InputLabel>
       <MuiSelect
+        fullWidth
         labelId="select"
         placeholder={label}
         value={value}
         onChange={handleChange}
         label={label}
-        input={<PokeInput />}
+        input={<PokeInput placeholder={label} />}
       >
         <MenuItem value="">
           <em>None</em>
         </MenuItem>
         {values}
       </MuiSelect>
-    </FormControl>
+    </>
   );
 }

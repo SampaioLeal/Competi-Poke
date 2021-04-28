@@ -1,11 +1,6 @@
 import { InputBase, withStyles } from "@material-ui/core";
 
 export const PokeInput = withStyles((theme) => ({
-  root: {
-    "label + &": {
-      marginTop: theme.spacing(2),
-    },
-  },
   input: {
     borderRadius: 4,
     position: "relative",
