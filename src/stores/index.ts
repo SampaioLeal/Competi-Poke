@@ -13,6 +13,14 @@ class Store {
     this.loading = bool;
   }
 
+  filters: PokemonFilters = {
+    name: "",
+    type: "",
+  };
+  setFilters(filters: PokemonFilters) {
+    this.filters = filters;
+  }
+
   types: ShortType[] = [];
   setTypes(types: ShortType[]) {
     this.types = types;
@@ -98,16 +106,21 @@ class Store {
 
   async getPokemons(
     limit: number,
-    page: number,
-    filters: PokemonFilters
+    page: number
   ): Promise<{ results: Pokemon[]; total: number } | undefined> {
     try {
       const db = useIndexedDB("pokemons");
       let pokemons = await db.getAll();
 
-      if (filters.type) {
+      if (this.filters.type) {
         pokemons = pokemons.filter((pokemon: Pokemon) =>
-          pokemon.types.some((type) => type.type.name === filters.type)
+          pokemon.types.some((type) => type.type.name === this.filters.type)
+        );
+      }
+
+      if (this.filters.name) {
+        pokemons = pokemons.filter((pokemon: Pokemon) =>
+          pokemon.name.includes(String(this.filters.name))
         );
       }
 

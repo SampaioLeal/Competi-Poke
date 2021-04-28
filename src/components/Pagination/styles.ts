@@ -1,3 +1,4 @@
+import { darken } from "@material-ui/core";
 import { PaginationItem } from "@material-ui/lab";
 import styled from "styled-components";
 
@@ -13,7 +14,6 @@ export const PokePaginationItem = styled(PaginationItem)`
   border-radius: 8px;
 
   background-color: ${(props) => {
-    console.log(props);
     if (props.type === "page") {
       if (props.selected) {
         return props.theme.palette.secondary.main;
@@ -24,6 +24,7 @@ export const PokePaginationItem = styled(PaginationItem)`
   }} !important;
 
   &:hover {
-    background-color: ${({ theme }) => theme.palette.secondary.main};
+    background-color: ${({ theme }) =>
+      darken(theme.palette.primary.main, 0.2)} !important;
   }
 `;

@@ -2,8 +2,17 @@ import { InputAdornment, Toolbar } from "@material-ui/core";
 import { PokeButton } from "../Buttons/styles";
 import { CompetiLogo, PokeBar, PokemonLogo, SearchInput } from "./styles";
 import SearchIcon from "@material-ui/icons/Search";
+import useStore from "../../stores";
 
 export default function NavBar() {
+  const store = useStore();
+
+  function handleSearchChange(
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) {
+    store.setFilters({ ...store.filters, name: event.target.value });
+  }
+
   return (
     <PokeBar color="secondary" position="fixed">
       <Toolbar>
@@ -19,6 +28,7 @@ export default function NavBar() {
           }}
           variant="outlined"
           placeholder="Search Pokémon…"
+          onChange={handleSearchChange}
         />
 
         <PokeButton variant="contained" color="primary">

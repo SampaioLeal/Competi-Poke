@@ -1,6 +1,18 @@
+import { Backdrop } from "@material-ui/core";
+import { useState } from "react";
 import { normalizeName } from "../../services/normalizeName";
 import useStore from "../../stores";
-import { View, Name, Order, Container, Type, TypesContainer } from "./styles";
+import {
+  View,
+  Name,
+  Order,
+  Container,
+  Type,
+  TypesContainer,
+  ActionButton,
+} from "./styles";
+import VisibilityIcon from "@material-ui/icons/Visibility";
+import AddIcon from "@material-ui/icons/Add";
 
 interface PokemonViewProps {
   pokemon: Pokemon;
@@ -8,11 +20,29 @@ interface PokemonViewProps {
 
 export default function PokemonView({ pokemon }: PokemonViewProps) {
   const store = useStore();
+  const [backdropState, setBackdropState] = useState(false);
+
+  function toggleBackdrop() {
+    setBackdropState((prev) => !prev);
+  }
 
   return (
     <Container>
-      <View>
+      <View onMouseEnter={toggleBackdrop} onMouseLeave={toggleBackdrop}>
         <img src={pokemon.image || ""} width="150px" />
+
+        <Backdrop
+          style={{ zIndex: 1, color: "#fff", position: "absolute" }}
+          open={backdropState}
+        >
+          <ActionButton bgColor="#49DBDF">
+            <VisibilityIcon />
+          </ActionButton>
+          <ActionButton bgColor="#3AA05B">
+            <AddIcon />
+          </ActionButton>
+        </Backdrop>
+
         <Order>{pokemon.order}</Order>
 
         <TypesContainer>

@@ -19,12 +19,9 @@ function Home() {
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
   const [page, setPage] = useState(0);
   const [totalPokemons, setTotalPokemons] = useState(0);
-  const [filters, setFilters] = useState<PokemonFilters>({
-    type: "",
-  });
 
   function handleTypeFilterChange(value: SelectRow["value"]) {
-    setFilters((prev) => ({ ...prev, type: value }));
+    store.setFilters({ ...store.filters, type: value });
   }
 
   function handlePageChange(_event: unknown, page: number) {
@@ -32,7 +29,7 @@ function Home() {
   }
 
   async function getPokemons() {
-    const pokes = await store.getPokemons(pokemonsPerPage, page, filters);
+    const pokes = await store.getPokemons(pokemonsPerPage, page);
 
     setTotalPokemons(pokes?.total || 0);
     setPokemons(pokes?.results || []);
@@ -53,7 +50,7 @@ function Home() {
 
   useEffect(() => {
     getPokemons();
-  }, [page, filters]);
+  }, [page, store.filters]);
 
   return (
     <Container>
@@ -63,7 +60,7 @@ function Home() {
             <Grid item xs={12} sm={4} md={3}>
               <Select
                 label="Filter by type"
-                value={filters.type}
+                value={store.filters.type}
                 onChange={handleTypeFilterChange}
                 options={store.types.map((type) => ({
                   label: type.name,

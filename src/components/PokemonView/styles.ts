@@ -1,3 +1,4 @@
+import { darken, IconButton } from "@material-ui/core";
 import styled from "styled-components";
 
 export const Container = styled.div`
@@ -31,9 +32,11 @@ export const Name = styled.div`
   border: solid 2px black;
   margin-top: -25px;
   position: relative;
+  z-index: 2;
 `;
 
 export const Order = styled.div`
+  z-index: 2;
   position: absolute;
   left: -30px;
   top: 0;
@@ -54,6 +57,7 @@ export const Order = styled.div`
 `;
 
 export const Type = styled.div`
+  z-index: 2;
   background-color: ${(props) => props.color};
 
   padding: 5px;
@@ -69,4 +73,17 @@ export const TypesContainer = styled.div`
   position: absolute;
   right: 5px;
   top: -15px;
+`;
+
+interface ActionButtonProps {
+  bgColor: string;
+}
+export const ActionButton = styled(IconButton)<ActionButtonProps>`
+  color: white;
+  background-color: ${({ bgColor }) => bgColor};
+  margin: 0 6px;
+
+  &:hover {
+    background-color: ${({ bgColor }) => darken(bgColor, 0.3)};
+  }
 `;

@@ -35,5 +35,6 @@ interface TypeColors {
 }
 
 interface PokemonFilters {
+  name: SelectRow["value"];
   type: SelectRow["value"];
 }

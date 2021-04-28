@@ -1,5 +1,10 @@
-import { FormControl, InputLabel, MenuItem } from "@material-ui/core";
-import { PokeSelect } from "./styles";
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select as MuiSelect,
+} from "@material-ui/core";
+import { PokeInput } from "./styles";
 
 export default function Select({
   options,
@@ -29,20 +34,21 @@ export default function Select({
   }
 
   return (
-    <FormControl fullWidth variant="outlined">
+    <FormControl fullWidth>
       <InputLabel id="select">{label}</InputLabel>
-      <PokeSelect
-        color="primary"
+      <MuiSelect
         labelId="select"
+        placeholder={label}
         value={value}
         onChange={handleChange}
         label={label}
+        input={<PokeInput />}
       >
         <MenuItem value="">
           <em>None</em>
         </MenuItem>
         {values}
-      </PokeSelect>
+      </MuiSelect>
     </FormControl>
   );
 }
