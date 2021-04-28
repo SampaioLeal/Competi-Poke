@@ -12,6 +12,12 @@ import {
 } from "@material-ui/core/styles";
 import Alert from "./components/Alert";
 
+import { DBConfig } from "./services/indexedDb";
+import { initDB } from "react-indexed-db";
+import Loader from "./components/Loader";
+
+initDB(DBConfig);
+
 export default function App() {
   return (
     <StylesProvider injectFirst>
@@ -30,6 +36,7 @@ export default function App() {
 
           <Footer />
           <Alert />
+          <Loader />
           <GlobalStyles />
         </ThemeProvider>
       </MuiThemeProvider>
