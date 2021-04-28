@@ -5,11 +5,12 @@ import { useEffect } from "react";
 import { Grid, Typography } from "@material-ui/core";
 import MyPokemon from "../../components/PokemonView/MyPokemon";
 import NotFound from "../NotFound";
+import { observer } from "mobx-react-lite";
 
-export default function PokemonList({ uid }: { uid: string }) {
+function PokemonList() {
   const store = useStore();
   const [snapshots, loading, error] = useList(
-    firebase.database().ref("pokedex/" + uid)
+    firebase.database().ref("pokedex/" + store.user?.uid)
   );
 
   useEffect(() => {
@@ -68,3 +69,5 @@ export default function PokemonList({ uid }: { uid: string }) {
     <NotFound />
   );
 }
+
+export default observer(PokemonList);
