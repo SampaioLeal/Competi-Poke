@@ -27,7 +27,7 @@ export const View = styled.div`
 export const Name = styled.div`
   color: white;
   background-color: ${({ theme }) => theme.palette.primary.main};
-  padding: 10px;
+  padding: 12px 25px;
   border-radius: 10px;
   border: solid 2px black;
   margin-top: -25px;
@@ -35,10 +35,13 @@ export const Name = styled.div`
   z-index: 2;
 `;
 
-export const Order = styled.div`
+interface OrderProps {
+  centered?: boolean;
+}
+export const Order = styled.div<OrderProps>`
   z-index: 2;
   position: absolute;
-  left: -30px;
+  left: ${(props) => (props.centered ? undefined : "-30px")};
   top: 0;
 
   background-image: url("/assets/order.svg");
@@ -68,11 +71,11 @@ export const Type = styled.div`
   border-radius: 5px;
 `;
 
-export const TypesContainer = styled.div`
+export const TypesContainer = styled.div<OrderProps>`
   display: flex;
-  position: absolute;
-  right: 5px;
-  top: -15px;
+  position: ${(props) => (props.centered ? "relative" : "absolute")};
+  right: ${(props) => (props.centered ? undefined : "5px")};
+  top: ${(props) => (props.centered ? "-65px" : "-15px")};
 `;
 
 interface ActionButtonProps {

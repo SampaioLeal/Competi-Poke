@@ -3,7 +3,7 @@ import { useIndexedDB } from "react-indexed-db";
 import { CarouselButton, PageButton } from "./styles";
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@material-ui/icons";
 import { Container, Grid, GridSize } from "@material-ui/core";
-import PokemonView from "../PokemonView";
+import PokemonViewCentered from "../PokemonView/Centered";
 
 export default function PokeCarousel() {
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
@@ -73,7 +73,7 @@ export default function PokeCarousel() {
                     xs={Math.ceil(12 / limit) as GridSize}
                     key={poke.name}
                   >
-                    <PokemonView pokemon={poke} />
+                    <PokemonViewCentered pokemon={poke} />
                   </Grid>
                 ))
               : null}
