@@ -13,7 +13,7 @@ export const PokemonLogo = styled.img.attrs({
 export const CompetiLogo = styled.img.attrs({
   src: "/assets/competi_logo.svg",
 })`
-  margin-left: 50px;
+  margin-left: 30px;
 `;
 
 export const SearchInput = styled(TextField)`
@@ -22,7 +22,7 @@ export const SearchInput = styled(TextField)`
   border-radius: 8px;
   height: 55px;
 
-  margin: 0 50px;
+  margin: 0 30px;
 
   label.Mui-focused {
     color: green;
