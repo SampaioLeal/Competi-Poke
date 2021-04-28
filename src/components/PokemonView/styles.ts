@@ -7,7 +7,11 @@ export const Container = styled.div`
   align-items: center;
 `;
 
-export const View = styled.div`
+interface ViewProps {
+  width?: string;
+  height?: string;
+}
+export const View = styled.div<ViewProps>`
   background-color: ${({ theme }) => theme.palette.primary.light};
   border-radius: 5px;
   border: solid 2px black;
@@ -20,8 +24,8 @@ export const View = styled.div`
 
   position: relative;
 
-  width: 200px;
-  height: 200px;
+  width: ${(props) => props.width || "200px"};
+  height: ${(props) => props.width || "200px"};
 `;
 
 export const Name = styled.div`
@@ -57,6 +61,17 @@ export const Order = styled.div<OrderProps>`
 
   color: white;
   margin-top: -30px;
+`;
+
+export const SimpleType = styled.div`
+  background-color: ${(props) => props.color};
+
+  padding: 5px;
+  color: white;
+  margin: 0 3px;
+  width: fit-content;
+
+  border-radius: 5px;
 `;
 
 export const Type = styled.div`

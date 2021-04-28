@@ -15,6 +15,7 @@ import Alert from "./components/Alert";
 import { DBConfig } from "./services/indexedDb";
 import { initDB } from "react-indexed-db";
 import Loader from "./components/Loader";
+import Dashboard from "./pages/Dashboard";
 
 initDB(DBConfig);
 
@@ -30,7 +31,7 @@ export default function App() {
 
             <Switch>
               <Route exact path="/" component={Home} />
-              <Route exact path="/pokedex" />
+              <Route exact path="/pokedex" component={Dashboard} />
             </Switch>
           </Router>
 

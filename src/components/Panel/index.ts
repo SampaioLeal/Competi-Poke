@@ -14,3 +14,7 @@ export default Panel;
 export const PanelContent = styled.div`
   padding: 35px;
 `;
+
+export const PanelTitle = styled.h1`
+  margin: 0;
+`;

@@ -9,28 +9,30 @@ class Store {
   }
 
   loading = false;
-  setLoading(bool: boolean) {
-    this.loading = bool;
-  }
-
+  types: ShortType[] = [];
   filters: PokemonFilters = {
     name: "",
     type: "",
   };
-  setFilters(filters: PokemonFilters) {
-    this.filters = filters;
-  }
-
-  types: ShortType[] = [];
-  setTypes(types: ShortType[]) {
-    this.types = types;
-  }
-
   alert: IAlert = {
     open: false,
     text: "",
     severity: "error",
   };
+  user: User | null = null;
+
+  setLoading(bool: boolean) {
+    this.loading = bool;
+  }
+
+  setFilters(filters: PokemonFilters) {
+    this.filters = filters;
+  }
+
+  setTypes(types: ShortType[]) {
+    this.types = types;
+  }
+
   setAlert(text: string, severity: Color) {
     this.alert = { open: true, text, severity };
   }
