@@ -2,7 +2,7 @@ interface GETPokemons {
   results: ShortPokemon[];
 }
 
-interface PokeType {
+interface ShortType {
   url: string;
   name: string;
 }
@@ -12,8 +12,28 @@ interface ShortPokemon {
   url: string;
 }
 
+interface PokeType {
+  slot: number;
+  type: {
+    name: string;
+    url: string;
+  };
+}
+
 interface Pokemon {
   id: number;
   name: string;
   weight: number;
+  order: number;
+
+  types: PokeType[];
+  image: string;
+}
+
+interface TypeColors {
+  [key: string]: string;
+}
+
+interface PokemonFilters {
+  type: SelectRow["value"];
 }
