@@ -1,4 +1,4 @@
 interface User {
+  uid: string;
   name: string;
-  pokemons: Pokemon[];
 }

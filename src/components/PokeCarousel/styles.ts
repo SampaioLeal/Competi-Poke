@@ -12,17 +12,17 @@ export const CarouselButton = styled(IconButton)`
 `;
 
 interface PageButtonProps {
-  active?: boolean;
+  $active?: boolean;
 }
 export const PageButton = styled(IconButton)<PageButtonProps>`
   border: solid 2px black;
   margin: 0 5px;
 
-  background-color: ${({ active, theme }) =>
-    active ? theme.palette.secondary.main : theme.palette.primary.main};
+  background-color: ${({ $active, theme }) =>
+    $active ? theme.palette.secondary.main : theme.palette.primary.main};
 
   &:hover {
-    background-color: ${({ active, theme }) =>
-      active ? theme.palette.secondary.main : theme.palette.primary.main};
+    background-color: ${({ $active, theme }) =>
+      $active ? theme.palette.secondary.main : theme.palette.primary.main};
   }
 `;

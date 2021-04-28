@@ -4,13 +4,19 @@ import { View, SimpleType, ActionButton } from "./styles";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import DeleteIcon from "@material-ui/icons/Delete";
 import useStore from "../../stores";
+import firebase from "firebase/app";
 
 interface MyPokemonProps {
+  pokeKey: string | null;
   pokemon: Pokemon;
 }
 
-export default function MyPokemon({ pokemon }: MyPokemonProps) {
+export default function MyPokemon({ pokeKey, pokemon }: MyPokemonProps) {
   const store = useStore();
+
+  function handleDeletePokemon() {
+    firebase.database().ref(`pokedex/${store.user?.uid}/${pokeKey}`).remove();
+  }
 
   return (
     <Paper elevation={0} style={{ padding: 10 }}>
@@ -40,10 +46,10 @@ export default function MyPokemon({ pokemon }: MyPokemonProps) {
           xs={3}
           style={{ display: "flex", justifyContent: "flex-end" }}
         >
-          <ActionButton bgColor="#49DBDF">
+          <ActionButton $bgColor="#49DBDF">
             <VisibilityIcon />
           </ActionButton>
-          <ActionButton bgColor="#F25D52">
+          <ActionButton onClick={handleDeletePokemon} $bgColor="#F25D52">
             <DeleteIcon />
           </ActionButton>
         </Grid>

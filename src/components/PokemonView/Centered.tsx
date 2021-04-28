@@ -35,10 +35,10 @@ export default function PokemonViewCentered({ pokemon }: PokemonViewProps) {
           style={{ zIndex: 1, color: "#fff", position: "absolute" }}
           open={backdropState}
         >
-          <ActionButton bgColor="#49DBDF">
+          <ActionButton $bgColor="#49DBDF">
             <VisibilityIcon />
           </ActionButton>
-          <ActionButton bgColor="#3AA05B">
+          <ActionButton $bgColor="#3AA05B">
             <AddIcon />
           </ActionButton>
         </Backdrop>

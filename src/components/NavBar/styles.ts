@@ -8,12 +8,15 @@ export const PokeBar = styled(AppBar)`
 
 export const PokemonLogo = styled.img.attrs({
   src: "/assets/poke_logo.svg",
-})``;
+})`
+  cursor: pointer;
+`;
 
 export const CompetiLogo = styled.img.attrs({
   src: "/assets/competi_logo.svg",
 })`
   margin-left: 30px;
+  cursor: pointer;
 `;
 
 export const SearchInput = styled(TextField)`

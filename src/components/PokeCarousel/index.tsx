@@ -97,7 +97,7 @@ export default function PokeCarousel() {
               <PageButton
                 onClick={handleSetPage(index)}
                 key={"page-" + index}
-                active={page === index}
+                $active={page === index}
               />
             ))}
         </Grid>

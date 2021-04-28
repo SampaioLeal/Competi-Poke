@@ -43,6 +43,10 @@ class Store {
     };
   }
 
+  setUser(user: User) {
+    this.user = user;
+  }
+
   getTypeColor(type: string) {
     return typeColors[type];
   }

@@ -10,13 +10,12 @@ import { CompetiLogo, PokeBar, PokemonLogo, SearchInput } from "./styles";
 import SearchIcon from "@material-ui/icons/Search";
 import useStore from "../../stores";
 import firebase from "firebase/app";
-import "firebase/auth";
-import { FirebaseAuthConsumer } from "@react-firebase/auth";
 import { useHistory } from "react-router";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import { MouseEvent, useState } from "react";
+import { observer } from "mobx-react-lite";
 
-export default function NavBar() {
+function NavBar() {
   const store = useStore();
   const history = useHistory();
   const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
@@ -27,14 +26,28 @@ export default function NavBar() {
     store.setFilters({ ...store.filters, name: event.target.value });
   }
 
-  function handleLogin() {
+  async function handleLogin() {
+    store.setLoading(true);
     const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
-    firebase.auth().signInWithPopup(googleAuthProvider);
+    await firebase
+      .auth()
+      .signInWithPopup(googleAuthProvider)
+      .then(
+        () => null,
+        () =>
+          store.setAlert("Ocorreu um erro no login. Tente novamente.", "error")
+      );
+    store.setLoading(false);
   }
 
   function handleGoTo(path: string) {
     return () => {
-      history.push(path);
+      handleCloseMenu();
+      if (path.includes("http")) {
+        return (window.location.href = path);
+      }
+
+      return history.push(path);
     };
   }
 
@@ -53,56 +66,51 @@ export default function NavBar() {
   }
 
   return (
-    <FirebaseAuthConsumer>
-      {({ isSignedIn, user }) => {
-        return (
-          <PokeBar color="secondary" position="fixed">
-            <Toolbar>
-              <PokemonLogo alt="Pokemon Logo" />
+    <PokeBar color="secondary" position="fixed">
+      <Toolbar>
+        <PokemonLogo onClick={handleGoTo("/")} alt="Pokemon Logo" />
 
-              <SearchInput
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <SearchIcon />
-                    </InputAdornment>
-                  ),
-                }}
-                variant="outlined"
-                placeholder="Search Pokémon…"
-                onChange={handleSearchChange}
-              />
+        <SearchInput
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon />
+              </InputAdornment>
+            ),
+          }}
+          variant="outlined"
+          placeholder="Search Pokémon…"
+          onChange={handleSearchChange}
+        />
 
-              {isSignedIn ? (
-                <IconButton onClick={handleMenuClick} color="inherit">
-                  <AccountCircleIcon />
-                </IconButton>
-              ) : (
-                <PokeButton
-                  onClick={handleLogin}
-                  variant="contained"
-                  color="primary"
-                >
-                  Login
-                </PokeButton>
-              )}
+        {store.user ? (
+          <IconButton onClick={handleMenuClick} color="inherit">
+            <AccountCircleIcon />
+          </IconButton>
+        ) : (
+          <PokeButton onClick={handleLogin} variant="contained" color="primary">
+            Login
+          </PokeButton>
+        )}
 
-              <Menu
-                anchorEl={menuAnchorEl}
-                keepMounted
-                open={Boolean(menuAnchorEl)}
-                onClose={handleCloseMenu}
-              >
-                <MenuItem disabled>{user?.displayName}</MenuItem>
-                <MenuItem onClick={handleGoTo("/pokedex")}>Pokedex</MenuItem>
-                <MenuItem onClick={handleLogout}>Sair</MenuItem>
-              </Menu>
+        <Menu
+          anchorEl={menuAnchorEl}
+          keepMounted
+          open={Boolean(menuAnchorEl)}
+          onClose={handleCloseMenu}
+        >
+          <MenuItem disabled>{store.user?.name}</MenuItem>
+          <MenuItem onClick={handleGoTo("/pokedex")}>Pokedex</MenuItem>
+          <MenuItem onClick={handleLogout}>Sair</MenuItem>
+        </Menu>
 
-              <CompetiLogo alt="Competi Logo" />
-            </Toolbar>
-          </PokeBar>
-        );
-      }}
-    </FirebaseAuthConsumer>
+        <CompetiLogo
+          onClick={handleGoTo("https://competisistemas.com.br/")}
+          alt="Competi Logo"
+        />
+      </Toolbar>
+    </PokeBar>
   );
 }
+
+export default observer(NavBar);

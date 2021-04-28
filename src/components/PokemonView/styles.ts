@@ -94,14 +94,14 @@ export const TypesContainer = styled.div<OrderProps>`
 `;
 
 interface ActionButtonProps {
-  bgColor: string;
+  $bgColor: string;
 }
 export const ActionButton = styled(IconButton)<ActionButtonProps>`
   color: white;
-  background-color: ${({ bgColor }) => bgColor};
+  background-color: ${({ $bgColor }) => $bgColor};
   margin: 0 6px;
 
   &:hover {
-    background-color: ${({ bgColor }) => darken(bgColor, 0.3)};
+    background-color: ${({ $bgColor }) => darken($bgColor, 0.3)};
   }
 `;

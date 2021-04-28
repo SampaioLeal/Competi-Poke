@@ -13,17 +13,39 @@ import {
 } from "./styles";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import AddIcon from "@material-ui/icons/Add";
+import { observer } from "mobx-react-lite";
+import firebase from "firebase/app";
 
 interface PokemonViewProps {
   pokemon: Pokemon;
 }
 
-export default function PokemonView({ pokemon }: PokemonViewProps) {
+function PokemonView({ pokemon }: PokemonViewProps) {
   const store = useStore();
   const [backdropState, setBackdropState] = useState(false);
 
   function toggleBackdrop() {
     setBackdropState((prev) => !prev);
+  }
+
+  function handleAddPokemon() {
+    const data = {
+      image: pokemon.image,
+      name: pokemon.name,
+      order: pokemon.order,
+      id: pokemon.id,
+      types: {} as { [key: string]: unknown },
+      added_on: new Date().toISOString(),
+    };
+
+    pokemon.types.forEach((type) => {
+      data.types[type.type.name] = type;
+    });
+
+    firebase
+      .database()
+      .ref("pokedex/" + store.user?.uid)
+      .push(data);
   }
 
   return (
@@ -35,12 +57,14 @@ export default function PokemonView({ pokemon }: PokemonViewProps) {
           style={{ zIndex: 1, color: "#fff", position: "absolute" }}
           open={backdropState}
         >
-          <ActionButton bgColor="#49DBDF">
+          <ActionButton $bgColor="#49DBDF">
             <VisibilityIcon />
           </ActionButton>
-          <ActionButton bgColor="#3AA05B">
-            <AddIcon />
-          </ActionButton>
+          {store.user ? (
+            <ActionButton onClick={handleAddPokemon} $bgColor="#3AA05B">
+              <AddIcon />
+            </ActionButton>
+          ) : null}
         </Backdrop>
 
         <Order>{pokemon.order}</Order>
@@ -62,3 +86,5 @@ export default function PokemonView({ pokemon }: PokemonViewProps) {
     </Container>
   );
 }
+
+export default observer(PokemonView);
