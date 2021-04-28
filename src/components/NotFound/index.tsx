@@ -9,7 +9,11 @@ export default function NotFound() {
         alignItems: "center",
       }}
     >
-      <img src="/assets/notfound.svg" width="200px" />
+      <img
+        src="/assets/notfound.svg"
+        width="200px"
+        alt="Pokemons não encontrados"
+      />
       <Typography variant="h4">Você ainda não tem pokemons salvos!</Typography>
     </div>
   );

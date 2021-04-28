@@ -31,6 +31,10 @@ export default function PokemonList({ uid }: { uid: string }) {
           return pokemon.types[typeKey];
         });
 
+        pokemon.abilities = Object.keys(pokemon.abilities).map((abilityKey) => {
+          return pokemon.abilities[abilityKey];
+        });
+
         return { key, pokemon };
       })
       .filter((item) => item.pokemon.name.includes(store.filters.name)) || [];

@@ -13,6 +13,7 @@ import {
 } from "./styles";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import AddIcon from "@material-ui/icons/Add";
+import Details from "./Details";
 
 interface PokemonViewProps {
   pokemon: Pokemon;
@@ -21,24 +22,41 @@ interface PokemonViewProps {
 export default function PokemonViewCentered({ pokemon }: PokemonViewProps) {
   const store = useStore();
   const [backdropState, setBackdropState] = useState(false);
+  const [modal, setModal] = useState(false);
 
-  function toggleBackdrop() {
-    setBackdropState((prev) => !prev);
+  function openBackdrop() {
+    setBackdropState(true);
+  }
+
+  function closeBackdrop() {
+    setBackdropState(false);
+  }
+
+  function handleAddPokemon() {
+    store.addPokemon(pokemon);
+  }
+
+  function openModal() {
+    setModal(true);
+  }
+
+  function closeModal() {
+    setModal(false);
   }
 
   return (
     <Container>
-      <View onMouseEnter={toggleBackdrop} onMouseLeave={toggleBackdrop}>
-        <img src={pokemon.image || ""} width="150px" />
+      <View onMouseEnter={openBackdrop} onMouseLeave={closeBackdrop}>
+        <img src={pokemon.image || ""} width="150px" alt={pokemon.name} />
 
         <Backdrop
           style={{ zIndex: 1, color: "#fff", position: "absolute" }}
           open={backdropState}
         >
-          <ActionButton $bgColor="#49DBDF">
+          <ActionButton onClick={openModal} $bgColor="#49DBDF">
             <VisibilityIcon />
           </ActionButton>
-          <ActionButton $bgColor="#3AA05B">
+          <ActionButton onClick={handleAddPokemon} $bgColor="#3AA05B">
             <AddIcon />
           </ActionButton>
         </Backdrop>
@@ -60,6 +78,8 @@ export default function PokemonViewCentered({ pokemon }: PokemonViewProps) {
           );
         })}
       </TypesContainer>
+
+      <Details pokemon={pokemon} open={modal} handleClose={closeModal} />
     </Container>
   );
 }

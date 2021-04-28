@@ -14,7 +14,7 @@ import {
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import AddIcon from "@material-ui/icons/Add";
 import { observer } from "mobx-react-lite";
-import firebase from "firebase/app";
+import Details from "./Details";
 
 interface PokemonViewProps {
   pokemon: Pokemon;
@@ -23,41 +23,38 @@ interface PokemonViewProps {
 function PokemonView({ pokemon }: PokemonViewProps) {
   const store = useStore();
   const [backdropState, setBackdropState] = useState(false);
+  const [modal, setModal] = useState(false);
 
-  function toggleBackdrop() {
-    setBackdropState((prev) => !prev);
+  function openBackdrop() {
+    setBackdropState(true);
+  }
+
+  function closeBackdrop() {
+    setBackdropState(false);
   }
 
   function handleAddPokemon() {
-    const data = {
-      image: pokemon.image,
-      name: pokemon.name,
-      order: pokemon.order,
-      id: pokemon.id,
-      types: {} as { [key: string]: unknown },
-      added_on: new Date().toISOString(),
-    };
+    store.addPokemon(pokemon);
+  }
 
-    pokemon.types.forEach((type) => {
-      data.types[type.type.name] = type;
-    });
+  function openModal() {
+    setModal(true);
+  }
 
-    firebase
-      .database()
-      .ref("pokedex/" + store.user?.uid)
-      .push(data);
+  function closeModal() {
+    setModal(false);
   }
 
   return (
     <Container>
-      <View onMouseEnter={toggleBackdrop} onMouseLeave={toggleBackdrop}>
-        <img src={pokemon.image || ""} width="150px" />
+      <View onMouseEnter={openBackdrop} onMouseLeave={closeBackdrop}>
+        <img src={pokemon.image || ""} width="150px" alt={pokemon.name} />
 
         <Backdrop
           style={{ zIndex: 1, color: "#fff", position: "absolute" }}
           open={backdropState}
         >
-          <ActionButton $bgColor="#49DBDF">
+          <ActionButton onClick={openModal} $bgColor="#49DBDF">
             <VisibilityIcon />
           </ActionButton>
           {store.user ? (
@@ -83,6 +80,8 @@ function PokemonView({ pokemon }: PokemonViewProps) {
         </TypesContainer>
       </View>
       <Name>{normalizeName(pokemon.name)}</Name>
+
+      <Details pokemon={pokemon} open={modal} handleClose={closeModal} />
     </Container>
   );
 }

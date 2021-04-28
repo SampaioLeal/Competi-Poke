@@ -4,7 +4,8 @@ import { View, SimpleType, ActionButton } from "./styles";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import DeleteIcon from "@material-ui/icons/Delete";
 import useStore from "../../stores";
-import firebase from "firebase/app";
+import { useState } from "react";
+import Details from "./Details";
 
 interface MyPokemonProps {
   pokeKey: string | null;
@@ -13,9 +14,18 @@ interface MyPokemonProps {
 
 export default function MyPokemon({ pokeKey, pokemon }: MyPokemonProps) {
   const store = useStore();
+  const [modal, setModal] = useState(false);
 
   function handleDeletePokemon() {
-    firebase.database().ref(`pokedex/${store.user?.uid}/${pokeKey}`).remove();
+    store.removePokemon(pokeKey);
+  }
+
+  function openModal() {
+    setModal(true);
+  }
+
+  function closeModal() {
+    setModal(false);
   }
 
   return (
@@ -23,7 +33,7 @@ export default function MyPokemon({ pokeKey, pokemon }: MyPokemonProps) {
       <Grid container spacing={0} alignItems="center">
         <Grid item xs={2}>
           <View width="80px">
-            <img src={pokemon.image || ""} width="150px" />
+            <img src={pokemon.image || ""} width="80px" alt={pokemon.name} />
           </View>
         </Grid>
         <Grid item xs={3}>
@@ -46,7 +56,7 @@ export default function MyPokemon({ pokeKey, pokemon }: MyPokemonProps) {
           xs={3}
           style={{ display: "flex", justifyContent: "flex-end" }}
         >
-          <ActionButton $bgColor="#49DBDF">
+          <ActionButton onClick={openModal} $bgColor="#49DBDF">
             <VisibilityIcon />
           </ActionButton>
           <ActionButton onClick={handleDeletePokemon} $bgColor="#F25D52">
@@ -54,6 +64,8 @@ export default function MyPokemon({ pokeKey, pokemon }: MyPokemonProps) {
           </ActionButton>
         </Grid>
       </Grid>
+
+      <Details pokemon={pokemon} open={modal} handleClose={closeModal} />
     </Paper>
   );
 }

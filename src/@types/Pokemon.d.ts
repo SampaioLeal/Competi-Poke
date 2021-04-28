@@ -20,11 +20,20 @@ interface PokeType {
   };
 }
 
+interface Ability {
+  ability: {
+    name: string;
+  };
+  is_hidden: boolean;
+}
+
 interface Pokemon {
   id: number;
   name: string;
+  height: number;
   weight: number;
   order: number;
+  abilities: Ability[];
 
   types: PokeType[];
   image: string;

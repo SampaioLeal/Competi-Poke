@@ -2,6 +2,7 @@ import { makeAutoObservable } from "mobx";
 import api from "../services/api";
 import typeColors from "../services/typeColors";
 import { useIndexedDB } from "react-indexed-db";
+import firebase from "firebase/app";
 
 class Store {
   constructor() {
@@ -88,16 +89,19 @@ class Store {
       return pokemon;
     }
 
-    const response = await api.get(`pokemon/${name}`);
+    const { data } = await api.get(`pokemon/${name}`);
     await db.add({
-      id: response.data.id,
-      name: response.data.name,
-      types: response.data.types,
-      image: response.data.sprites.front_default,
-      order: response.data.order,
+      id: data.id,
+      name: data.name,
+      types: data.types,
+      image: data.sprites.front_default,
+      order: data.order,
+      height: data.height,
+      weight: data.weight,
+      abilities: data.abilities,
     });
 
-    return response.data;
+    return data;
   }
 
   async fetchAllPokemons() {
@@ -140,6 +144,38 @@ class Store {
 
       return;
     }
+  }
+
+  addPokemon(pokemon: Pokemon) {
+    const data = {
+      id: pokemon.id,
+      image: pokemon.image,
+      name: pokemon.name,
+      order: pokemon.order,
+      height: pokemon.height,
+      weight: pokemon.weight,
+      types: {} as { [key: string]: unknown },
+      abilities: {} as { [key: string]: unknown },
+      added_on: new Date().toISOString(),
+    };
+
+    pokemon.types.forEach((type) => {
+      data.types[type.type.name] = type;
+    });
+
+    pokemon.abilities.forEach((ability) => {
+      data.abilities[ability.ability.name] = ability;
+    });
+
+    firebase
+      .database()
+      .ref("pokedex/" + this.user?.uid)
+      .push(data);
+  }
+
+  removePokemon(key: string | null) {
+    if (key)
+      firebase.database().ref(`pokedex/${this.user?.uid}/${key}`).remove();
   }
 }
 
